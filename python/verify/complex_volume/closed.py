@@ -84,7 +84,7 @@ def zero_lifted_holonomy(manifold, m, l, f):
     return m, l
 
 @sage_method
-def verified_complex_volume_closed_torsion(manifold, bits_prec = None):
+def verified_complex_volume_closed_torsion(manifold, bits_prec = None, normalize = True):
     """
     Computes the verified complex volume (where the real part is the
     volume and the imaginary part is the Chern-Simons) for a given
@@ -154,11 +154,13 @@ def verified_complex_volume_closed_torsion(manifold, bits_prec = None):
         c.mcomplex, lifted_ptolemys)
 
     # When using the dilogarithm, the Chern-Simons is the real part.
-    # By SnapPy convention, the volume is the real part, so divide by
-    # I.
-    # Also add multiples of pi^2/2 to try to get the Chern-Simons part
-    # between -pi^2/4 and pi^2/4.
-    return normalize_by_pi_square_over_two(complex_volume) / sage.all.I
+    # By SnapPy convention, the volume is the real part, so divide by I.
+    if normalize:
+        # Add multiples of pi^2/2 to try to get the Chern-Simons part
+        # between -pi^2/4 and pi^2/4.
+        return normalize_by_pi_square_over_two(complex_volume) / sage.all.I
+    else:
+        return complex_volume / sage.all.I
 
 
 
